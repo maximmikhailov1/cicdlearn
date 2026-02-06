@@ -1,0 +1,10 @@
+# Starter workflow. See docs/CI_CD_GUIDE.md for how to add real CI (tests, lint, build).
+# Copy or rename to e.g. tests.yml and add triggers (on: push, pull_request) and jobs.
+name: Placeholder
+on:
+  workflow_dispatch:  # run only manually; replace with push/pull_request when adding CI
+jobs:
+  placeholder:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Add your test and lint jobs here - see docs/CI_CD_GUIDE.md"
