@@ -12,9 +12,13 @@ jobs:
   placeholder:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
-      - run: checkout actions/checkout@v6
-      - uses: actions/setup-python@v6
+      - name: Checkout
+        uses: actions/checkout@v6.0.2
+        with:
+          fetch-depth: 0
+          repository: actions/checkout
+      - name: Python tests 
+        uses: actions/setup-python@v6
         with:
           python-version: 3.12
       - run: pip install -r requirements
