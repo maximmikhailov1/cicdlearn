@@ -11,25 +11,42 @@ on:
 jobs:
   placeholder:
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: app
+          POSTGRES_PASSWORD: app
+          POSTGRES_DB: app
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+      mongo:
+        image: mongo:7
+        ports:
+          - 27017:27017
+    env:
+      APP_POSTGRES_URL: postgresql+asyncpg://app:app@localhost:5432/app
+      APP_MONGO_URL: mongodb://localhost:27017
+      APP_MONGO_DB: app
     steps:
       - name: Checkout
         uses: actions/checkout@v6.0.2
-        with:
-          fetch-depth: 0
-          repository: actions/checkout
-          
-      - name: List files in the repository
-        run: |
-          ls ${{ github.workspace }}
-          
-      - name: Setup python 
+
+      - name: Setup Python
         uses: actions/setup-python@v6
         with:
-          python-version: 3.12
-          
-      - run: python -m pip install --upgrade pip
-      - run: pip install -r requirements.txt
-        working-directory: backend/
-      - run: pytest
-        working-directory: backend/app/
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+        working-directory: backend
+
+      - name: Run pytest
+        run: pytest
+        working-directory: backend
       
