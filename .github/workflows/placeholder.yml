@@ -17,11 +17,17 @@ jobs:
         with:
           fetch-depth: 0
           repository: actions/checkout
-      - name: Python tests 
+          
+      - name: List files in the repository
+        run: |
+          ls ${{ github.workspace }}
+          
+      - name: Setup python 
         uses: actions/setup-python@v6
         with:
           python-version: 3.12
-      - run: pip install -r requirements
+          
+      - run: pip install -r requirements.txt
         working-directory: backend/
       - run: pytest
         working-directory: backend/app/
