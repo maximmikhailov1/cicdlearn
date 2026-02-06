@@ -1,10 +1,24 @@
 # Starter workflow. See docs/CI_CD_GUIDE.md for how to add real CI (tests, lint, build).
 # Copy or rename to e.g. tests.yml and add triggers (on: push, pull_request) and jobs.
 name: Placeholder
+permissions: 
+  contents: read
 on:
-  workflow_dispatch:  # run only manually; replace with push/pull_request when adding CI
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
 jobs:
   placeholder:
     runs-on: ubuntu-latest
     steps:
-      - run: echo "Add your test and lint jobs here - see docs/CI_CD_GUIDE.md"
+      - uses: actions/checkout@v6
+      - run: git checkout actions/checkout@v6.0.2
+      - uses: actions/setup-python@v6
+        with:
+          python-version: 3.12
+      - run: pip install -r requirements
+        working-directory: backend/
+      - run: pytest
+        working-directory: backend/app/
+      
